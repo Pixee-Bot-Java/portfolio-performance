@@ -83,13 +83,13 @@ public class TestCurrencyConverter implements CurrencyConverter
             return new ExchangeRate(date, BigDecimal.ONE);
 
         ExchangeRateTimeSeries series;
-        if (currencyCode.equals("USD") && termCurrency.equals("EUR"))
+        if ("USD".equals(currencyCode) && "EUR".equals(termCurrency))
             series = USD_EUR;
-        else if (currencyCode.equals("EUR") && termCurrency.equals("USD"))
+        else if ("EUR".equals(currencyCode) && "USD".equals(termCurrency))
             series = EUR_USD;
-        else if (currencyCode.equals("CHF") && termCurrency.equals("EUR"))
+        else if ("CHF".equals(currencyCode) && "EUR".equals(termCurrency))
             series = CHF_EUR;
-        else if (currencyCode.equals("EUR") && termCurrency.equals("CHF"))
+        else if ("EUR".equals(currencyCode) && "CHF".equals(termCurrency))
             series = EUR_CHF;
         else
             // testing: any other currency will be converted 1:1
@@ -106,7 +106,7 @@ public class TestCurrencyConverter implements CurrencyConverter
 
         if (currencyCode.equals(CurrencyUnit.EUR)
                 || currencyCode.equals(CurrencyUnit.USD)
-                || currencyCode.equals("CHF"))
+                || "CHF".equals(currencyCode))
             return new TestCurrencyConverter(currencyCode);
 
         return null;
