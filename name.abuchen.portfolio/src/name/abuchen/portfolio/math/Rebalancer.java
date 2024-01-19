@@ -222,6 +222,7 @@ public class Rebalancer
         Set<InvestmentVehicle> ambigousResults;
         if(isAmbiguous)
         {
+            {
             ambigousResults = new HashSet<>();
             // Let the matrix M ∈ ℝ^{m × n} be our coefficient matrix, r the rank of M and  M = S Σ V* be the SVD of M:
             // Then the kernel of M is spanned by the last n - r vectors of V.
@@ -239,6 +240,7 @@ public class Rebalancer
                 if(isThisAmbiguous)
                     ambigousResults.add(investmentVehicles.get(i));
             }
+        }
         }
         else
             ambigousResults = Collections.emptySet();
