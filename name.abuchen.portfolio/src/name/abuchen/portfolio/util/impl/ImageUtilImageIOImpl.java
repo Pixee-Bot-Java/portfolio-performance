@@ -147,7 +147,7 @@ public class ImageUtilImageIOImpl extends ImageUtil
             try
             {
                 reader.setInput(input);
-                if (reader.getFormatName().equalsIgnoreCase("ico")) //$NON-NLS-1$
+                if ("ico".equalsIgnoreCase(reader.getFormatName())) //$NON-NLS-1$
                 {
                     // ico files have multiple resolutions. We pick the largest
                     // one with the best pixelSize that fits into maxWidth and

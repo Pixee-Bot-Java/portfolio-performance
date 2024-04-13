@@ -361,7 +361,7 @@ public class ECBStatisticalDataWarehouseQuoteFeed implements QuoteFeed
 
             // This check is necessary because for USA 10year yield NaN is
             // returned in the period 1914-08 - 1914-11
-            if (!interestRateString.equals("NaN")) //$NON-NLS-1$
+            if (!"NaN".equals(interestRateString)) //$NON-NLS-1$
             {
                 BigDecimal interestRate = new BigDecimal(interestRateString);
                 dataSeries.add(new Pair<>(date, interestRate));

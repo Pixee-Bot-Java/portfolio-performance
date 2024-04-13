@@ -33,7 +33,7 @@ public class XStreamArrayListConverter extends CollectionConverter
     @Override
     public boolean canConvert(@SuppressWarnings("rawtypes") Class type)
     {
-        return type.getName().equals("java.util.Arrays$ArrayList"); // NOSONAR //$NON-NLS-1$
+        return "java.util.Arrays$ArrayList".equals(type.getName()); // NOSONAR //$NON-NLS-1$
     }
 
     @Override
