@@ -51,7 +51,7 @@ public final class InfoToolTip extends ToolTip
     {
         parent.setData(UIConstants.CSS.CLASS_NAME, "tooltip"); //$NON-NLS-1$
         
-        if (message.get() == null || message.get().equals("")) //$NON-NLS-1$
+        if (message.get() == null || "".equals(message.get())) //$NON-NLS-1$
             return parent;
 
         Composite result = new Composite(parent, SWT.NONE);
