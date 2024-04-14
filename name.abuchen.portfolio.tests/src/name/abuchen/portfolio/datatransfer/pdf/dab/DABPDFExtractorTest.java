@@ -1,22 +1,36 @@
 package name.abuchen.portfolio.datatransfer.pdf.dab;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.junit.Assert.assertNull;
-
+import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.check;
+import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.dividend;
 import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.hasAmount;
+import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.hasCurrencyCode;
 import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.hasDate;
 import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.hasFees;
+import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.hasForexGrossValue;
 import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.hasGrossValue;
+import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.hasIsin;
+import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.hasName;
 import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.hasNote;
 import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.hasShares;
 import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.hasSource;
 import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.hasTaxes;
+import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.hasTicker;
+import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.hasWkn;
 import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.inboundDelivery;
+import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.outboundDelivery;
+import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.sale;
+import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.security;
 import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.taxRefund;
+import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.taxes;
 import static name.abuchen.portfolio.datatransfer.ExtractorMatchers.withFailureMessage;
+import static name.abuchen.portfolio.datatransfer.ExtractorTestUtilities.countAccountTransactions;
+import static name.abuchen.portfolio.datatransfer.ExtractorTestUtilities.countBuySell;
+import static name.abuchen.portfolio.datatransfer.ExtractorTestUtilities.countSecurities;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static org.junit.Assert.assertNull;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -55,7 +69,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Kauf01.txt"), errors);
 
         assertThat(errors, empty());
@@ -98,7 +112,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Kauf02.txt"), errors);
 
         assertThat(errors, empty());
@@ -141,7 +155,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Kauf03.txt"), errors);
 
         assertThat(errors, empty());
@@ -184,7 +198,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Kauf04.txt"), errors);
 
         assertThat(errors, empty());
@@ -279,7 +293,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Kauf05.txt"), errors);
 
         assertThat(errors, empty());
@@ -322,7 +336,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Kauf06.txt"), errors);
 
         assertThat(errors, empty());
@@ -365,7 +379,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Kauf07.txt"), errors);
 
         assertThat(errors, empty());
@@ -460,7 +474,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Kauf08.txt"), errors);
 
         assertThat(errors, empty());
@@ -555,7 +569,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Kauf09.txt"), errors);
 
         assertThat(errors, empty());
@@ -618,7 +632,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Kauf10.txt"), errors);
 
         assertThat(errors, empty());
@@ -661,7 +675,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Kauf11.txt"), errors);
 
         assertThat(errors, empty());
@@ -704,7 +718,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Kauf12.txt"), errors);
 
         assertThat(errors, empty());
@@ -747,7 +761,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Kauf13.txt"), errors);
 
         assertThat(errors, empty());
@@ -790,7 +804,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Verkauf01.txt"), errors);
 
         assertThat(errors, empty());
@@ -833,7 +847,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Verkauf02.txt"), errors);
 
         assertThat(errors, empty());
@@ -968,7 +982,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Verkauf03.txt"), errors);
 
         assertThat(errors, empty());
@@ -1103,7 +1117,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Verkauf04.txt"), errors);
 
         assertThat(errors, empty());
@@ -1166,7 +1180,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Verkauf05.txt"), errors);
 
         assertThat(errors, empty());
@@ -1209,7 +1223,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Verkauf06.txt"), errors);
 
         assertThat(errors, empty());
@@ -1272,7 +1286,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Verkauf07.txt"), errors);
 
         assertThat(errors, empty());
@@ -1335,7 +1349,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Verkauf08.txt"), errors);
 
         assertThat(errors, empty());
@@ -1378,7 +1392,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Verkauf09.txt"), errors);
 
         assertThat(errors, empty());
@@ -1462,7 +1476,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Verkauf10.txt"), errors);
 
         assertThat(errors, empty());
@@ -1505,7 +1519,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Verkauf11.txt"), errors);
 
         assertThat(errors, empty());
@@ -1562,13 +1576,13 @@ public class DABPDFExtractorTest
         assertThat(transaction.getUnitSum(Unit.Type.FEE),
                         is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(0.00))));
     }
-    
+
     @Test
     public void testWertpapierVerkauf12()
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Verkauf12.txt"), errors);
 
         assertThat(errors, empty());
@@ -1658,11 +1672,42 @@ public class DABPDFExtractorTest
     }
 
     @Test
+    public void testWertpapierVerkauf13()
+    {
+        DABPDFExtractor extractor = new DABPDFExtractor(new Client());
+
+        List<Exception> errors = new ArrayList<>();
+
+        List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Verkauf13.txt"), errors);
+
+        assertThat(errors, empty());
+        assertThat(countSecurities(results), is(1L));
+        assertThat(countBuySell(results), is(1L));
+        assertThat(countAccountTransactions(results), is(0L));
+        assertThat(results.size(), is(2));
+        new AssertImportActions().check(results, CurrencyUnit.EUR);
+
+        // check security
+        assertThat(results, hasItem(security( //
+                        hasIsin("DE0001104875"), hasWkn(null), hasTicker(null), //
+                        hasName("Bundesrep.Deutschland Bundesschatzanw. v.22(24)"), //
+                        hasCurrencyCode("EUR"))));
+
+        // check buy sell transaction
+        assertThat(results, hasItem(sale( //
+                        hasDate("2024-03-15T00:00"), hasShares(100), //
+                        hasSource("Verkauf13.txt"), //
+                        hasNote("Abrechnungs-Nr. 12345678"), //
+                        hasAmount("EUR", 9880.00), hasGrossValue("EUR", 10000.00), //
+                        hasTaxes("EUR", 100.00 + 10.00 + 10.00), hasFees("EUR", 0.00))));
+    }
+
+    @Test
     public void testMultipleWertpapierKaufVerkauf01()
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "MultipleKaufVerkauf01.txt"),
                         errors);
 
@@ -1847,7 +1892,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende01.txt"), errors);
 
         assertThat(errors, empty());
@@ -1889,7 +1934,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende02.txt"), errors);
 
         assertThat(errors, empty());
@@ -1937,7 +1982,7 @@ public class DABPDFExtractorTest
 
         DABPDFExtractor extractor = new DABPDFExtractor(client);
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende02.txt"), errors);
 
         assertThat(errors, empty());
@@ -1980,7 +2025,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende03.txt"), errors);
 
         assertThat(errors, empty());
@@ -2031,7 +2076,7 @@ public class DABPDFExtractorTest
 
         DABPDFExtractor extractor = new DABPDFExtractor(client);
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende03.txt"), errors);
 
         assertThat(errors, empty());
@@ -2070,7 +2115,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende04.txt"), errors);
 
         assertThat(errors, empty());
@@ -2112,7 +2157,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende05.txt"), errors);
 
         assertThat(errors, empty());
@@ -2160,7 +2205,7 @@ public class DABPDFExtractorTest
 
         DABPDFExtractor extractor = new DABPDFExtractor(client);
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende05.txt"), errors);
 
         assertThat(errors, empty());
@@ -2202,7 +2247,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende06.txt"), errors);
 
         assertThat(errors, empty());
@@ -2253,7 +2298,7 @@ public class DABPDFExtractorTest
 
         DABPDFExtractor extractor = new DABPDFExtractor(client);
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende06.txt"), errors);
 
         assertThat(errors, empty());
@@ -2292,7 +2337,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende07.txt"), errors);
 
         assertThat(errors, empty());
@@ -2341,7 +2386,7 @@ public class DABPDFExtractorTest
 
         DABPDFExtractor extractor = new DABPDFExtractor(client);
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende07.txt"), errors);
 
         assertThat(errors, empty());
@@ -2383,7 +2428,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende08.txt"), errors);
 
         assertThat(errors, empty());
@@ -2431,7 +2476,7 @@ public class DABPDFExtractorTest
 
         DABPDFExtractor extractor = new DABPDFExtractor(client);
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende08.txt"), errors);
 
         assertThat(errors, empty());
@@ -2473,7 +2518,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende09.txt"), errors);
 
         assertThat(errors, empty());
@@ -2515,7 +2560,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende10.txt"), errors);
 
         assertThat(errors, empty());
@@ -2560,7 +2605,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende11.txt"), errors);
 
         assertThat(errors, empty());
@@ -2611,7 +2656,7 @@ public class DABPDFExtractorTest
 
         DABPDFExtractor extractor = new DABPDFExtractor(client);
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende11.txt"), errors);
 
         assertThat(errors, empty());
@@ -2650,7 +2695,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende12.txt"), errors);
 
         assertThat(errors, empty());
@@ -2701,7 +2746,7 @@ public class DABPDFExtractorTest
 
         DABPDFExtractor extractor = new DABPDFExtractor(client);
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende12.txt"), errors);
 
         assertThat(errors, empty());
@@ -2740,7 +2785,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende13.txt"), errors);
 
         assertThat(errors, empty());
@@ -2792,7 +2837,7 @@ public class DABPDFExtractorTest
 
         DABPDFExtractor extractor = new DABPDFExtractor(client);
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende13.txt"), errors);
 
         assertThat(errors, empty());
@@ -2831,7 +2876,7 @@ public class DABPDFExtractorTest
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende14.txt"), errors);
 
         assertThat(errors, empty());
@@ -2883,7 +2928,7 @@ public class DABPDFExtractorTest
 
         DABPDFExtractor extractor = new DABPDFExtractor(client);
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Exception> errors = new ArrayList<>();
         List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende14.txt"), errors);
 
         assertThat(errors, empty());
@@ -2915,6 +2960,76 @@ public class DABPDFExtractorTest
         account.setCurrencyCode(CurrencyUnit.EUR);
         Status s = c.process(transaction, account);
         assertThat(s, is(Status.OK_STATUS));
+    }
+
+    @Test
+    public void testDividende15()
+    {
+        DABPDFExtractor extractor = new DABPDFExtractor(new Client());
+
+        List<Exception> errors = new ArrayList<>();
+
+        List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende15.txt"), errors);
+
+        assertThat(errors, empty());
+        assertThat(countSecurities(results), is(1L));
+        assertThat(countBuySell(results), is(0L));
+        assertThat(countAccountTransactions(results), is(1L));
+        assertThat(results.size(), is(2));
+        new AssertImportActions().check(results, CurrencyUnit.EUR);
+
+        // check security
+        assertThat(results, hasItem(security( //
+                        hasIsin("US2538681030"), hasWkn(null), hasTicker(null), //
+                        hasName("Digital Realty Trust Inc. Registered Shares DL -,01"), //
+                        hasCurrencyCode("USD"))));
+
+        // check dividends transaction
+        assertThat(results, hasItem(dividend( //
+                        hasDate("2023-09-29T00:00"), hasShares(25), //
+                        hasSource("Dividende15.txt"), //
+                        hasNote("Abrechnungs-Nr. 12345678"), //
+                        hasAmount("EUR", 21.38), hasGrossValue("EUR", 28.73), //
+                        hasForexGrossValue("USD", 30.50), //
+                        hasTaxes("EUR", 4.31 + 2.88 + 0.16), hasFees("EUR", 0.00))));
+    }
+
+    @Test
+    public void testDividende15WithSecurityInEUR()
+    {
+        Security security = new Security("Digital Realty Trust Inc. Registered Shares DL -,01", CurrencyUnit.EUR);
+        security.setIsin("US2538681030");
+
+        Client client = new Client();
+        client.addSecurity(security);
+
+        DABPDFExtractor extractor = new DABPDFExtractor(client);
+
+        List<Exception> errors = new ArrayList<>();
+
+        List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Dividende15.txt"), errors);
+
+        assertThat(errors, empty());
+        assertThat(countSecurities(results), is(0L));
+        assertThat(countBuySell(results), is(0L));
+        assertThat(countAccountTransactions(results), is(1L));
+        assertThat(results.size(), is(1));
+        new AssertImportActions().check(results, CurrencyUnit.EUR);
+
+        // check dividends transaction
+        assertThat(results, hasItem(dividend( //
+                        hasDate("2023-09-29T00:00"), hasShares(25), //
+                        hasSource("Dividende15.txt"), //
+                        hasNote("Abrechnungs-Nr. 12345678"), //
+                        hasAmount("EUR", 21.38), hasGrossValue("EUR", 28.73), //
+                        hasTaxes("EUR", 4.31 + 2.88 + 0.16), hasFees("EUR", 0.00), //
+                        check(tx -> {
+                            CheckCurrenciesAction c = new CheckCurrenciesAction();
+                            Account account = new Account();
+                            account.setCurrencyCode(CurrencyUnit.EUR);
+                            Status s = c.process((AccountTransaction) tx, account);
+                            assertThat(s, is(Status.OK_STATUS));
+                        }))));
     }
 
     @Test
@@ -2961,54 +3076,37 @@ public class DABPDFExtractorTest
     }
 
     @Test
-    public void testEinbuchung02()
+    public void testSplit01()
     {
         DABPDFExtractor extractor = new DABPDFExtractor(new Client());
 
         List<Exception> errors = new ArrayList<>();
 
-        List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Einbuchung02.txt"), errors);
+        List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Split01.txt"),
+                        errors);
 
         assertThat(errors, empty());
+        assertThat(countSecurities(results), is(1L));
+        assertThat(countBuySell(results), is(0L));
+        assertThat(countAccountTransactions(results), is(1L));
         assertThat(results.size(), is(2));
         new AssertImportActions().check(results, CurrencyUnit.EUR);
 
         // check security
-        Security security = results.stream().filter(SecurityItem.class::isInstance).findFirst()
-                        .orElseThrow(IllegalArgumentException::new).getSecurity();
-        assertThat(security.getIsin(), is("LU1291106356"));
-        assertNull(security.getWkn());
-        assertNull(security.getTickerSymbol());
-        assertThat(security.getName(), is("BNP P.Easy-MSCI Pac.x.Jap.x.CW Nam.-Ant.UCITS ETF CAP o.N"));
-        assertThat(security.getCurrencyCode(), is(CurrencyUnit.EUR));
+        assertThat(results, hasItem(security( //
+                        hasIsin("LU1291106356"), hasWkn(null), hasTicker(null), //
+                        hasName("BNP P.Easy-MSCI Pac.x.Jap.x.CW Nam.-Ant.UCITS ETF CAP o.N"), //
+                        hasCurrencyCode("EUR"))));
 
-        // check delivery inbound (Einlieferung) transaction
-        PortfolioTransaction entry = (PortfolioTransaction) results.stream().filter(TransactionItem.class::isInstance)
-                        .findFirst().orElseThrow(IllegalArgumentException::new).getSubject();
-
-        assertThat(entry.getType(), is(PortfolioTransaction.Type.DELIVERY_INBOUND));
-
-        assertThat(entry.getDateTime(), is(LocalDateTime.parse("2018-12-04T00:00")));
-        assertThat(entry.getShares(), is(Values.Share.factorize(1.5884)));
-        assertThat(entry.getSource(), is("Einbuchung02.txt"));
-        assertThat(entry.getNote(), is("Ausführungs-Nr. 12345678"));
-
-        assertThat(entry.getMonetaryAmount(),
-                        is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(0.00))));
-        assertThat(entry.getGrossValue(),
-                        is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(0.00))));
-        assertThat(entry.getUnitSum(Unit.Type.TAX),
-                        is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(0.00))));
-        assertThat(entry.getUnitSum(Unit.Type.FEE),
-                        is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(0.00))));
-
-        //  check cancellation transaction
-        assertThat(results, hasItem(withFailureMessage(Messages.MsgErrorTransactionTypeNotSupported, //
+        // check unsupported transaction
+        assertThat(results, hasItem(withFailureMessage( //
+                        Messages.MsgErrorSplitTransactionsNotSupported, //
                         inboundDelivery( //
-                                hasDate("2018-12-04T00:00"), hasShares(1.5884), //
-                                hasSource("Einbuchung02.txt"), hasNote("Ausführungs-Nr. 12345678"), //
-                                hasAmount("EUR", 0.00), hasGrossValue("EUR", 0.00), //
-                                hasTaxes("EUR", 0), hasFees("EUR", 0.00)))));
+                                        hasDate("2018-12-04T00:00"), hasShares(1.5884), //
+                                        hasSource("Split01.txt"), //
+                                        hasNote("Ausführungs-Nr. 12345678"), //
+                                        hasAmount("EUR", 0.00), hasGrossValue("EUR", 0.00), //
+                                        hasTaxes("EUR", 0.00), hasFees("EUR", 0.00)))));
     }
 
     @Test
@@ -3018,40 +3116,31 @@ public class DABPDFExtractorTest
 
         List<Exception> errors = new ArrayList<>();
 
-        List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Ausbuchung01.txt"), errors);
+        List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Ausbuchung01.txt"),
+                        errors);
 
         assertThat(errors, empty());
+        assertThat(countSecurities(results), is(1L));
+        assertThat(countBuySell(results), is(0L));
+        assertThat(countAccountTransactions(results), is(1L));
         assertThat(results.size(), is(2));
         new AssertImportActions().check(results, CurrencyUnit.EUR);
 
         // check security
-        Security security = results.stream().filter(SecurityItem.class::isInstance).findFirst()
-                        .orElseThrow(IllegalArgumentException::new).getSecurity();
-        assertThat(security.getIsin(), is("AU000000CFU6"));
-        assertNull(security.getWkn());
-        assertNull(security.getTickerSymbol());
-        assertThat(security.getName(), is("Ceramic Fuel Cells Ltd. Registered Shares o.N."));
-        assertThat(security.getCurrencyCode(), is(CurrencyUnit.EUR));
+        assertThat(results, hasItem(security( //
+                        hasIsin("AU000000CFU6"), hasWkn(null), hasTicker(null), //
+                        hasName("Ceramic Fuel Cells Ltd. Registered Shares o.N."), //
+                        hasCurrencyCode("EUR"))));
 
-        // check delivery outbound (Auslieferung) transaction
-        PortfolioTransaction entry = (PortfolioTransaction) results.stream().filter(TransactionItem.class::isInstance)
-                        .findFirst().orElseThrow(IllegalArgumentException::new).getSubject();
-
-        assertThat(entry.getType(), is(PortfolioTransaction.Type.DELIVERY_OUTBOUND));
-
-        assertThat(entry.getDateTime(), is(LocalDateTime.parse("2022-02-04T00:00")));
-        assertThat(entry.getShares(), is(Values.Share.factorize(1000)));
-        assertThat(entry.getSource(), is("Ausbuchung01.txt"));
-        assertThat(entry.getNote(), is("Ausführungs-Nr. 62772656"));
-
-        assertThat(entry.getMonetaryAmount(),
-                        is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(0.00))));
-        assertThat(entry.getGrossValue(),
-                        is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(0.00))));
-        assertThat(entry.getUnitSum(Unit.Type.TAX),
-                        is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(0.00))));
-        assertThat(entry.getUnitSum(Unit.Type.FEE),
-                        is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(0.00))));
+        // check unsupported transaction
+        assertThat(results, hasItem(withFailureMessage( //
+                        Messages.MsgErrorTransactionTypeNotSupported, //
+                        outboundDelivery( //
+                                        hasDate("2022-02-04T00:00"), hasShares(1000.00), //
+                                        hasSource("Ausbuchung01.txt"), //
+                                        hasNote("Ausführungs-Nr. 62772656"), //
+                                        hasAmount("EUR", 0.00), hasGrossValue("EUR", 0.00), //
+                                        hasTaxes("EUR", 0.00), hasFees("EUR", 0.00)))));
     }
 
     @Test
@@ -3074,6 +3163,37 @@ public class DABPDFExtractorTest
                         hasSource("Steuerausgleich01.txt"), hasNote("Abrechnungs-Nr. 12345678 | Steuerausgleich 2023"), //
                         hasAmount("EUR", 143.90), hasGrossValue("EUR", 143.90), //
                         hasTaxes("EUR", 0), hasFees("EUR", 0.00))));
+    }
+
+    @Test
+    public void testVorabpauschale01()
+    {
+        DABPDFExtractor extractor = new DABPDFExtractor(new Client());
+
+        List<Exception> errors = new ArrayList<>();
+
+        List<Item> results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "Vorabpauschale01.txt"), errors);
+
+        assertThat(errors, empty());
+        assertThat(countSecurities(results), is(1L));
+        assertThat(countBuySell(results), is(0L));
+        assertThat(countAccountTransactions(results), is(1L));
+        assertThat(results.size(), is(2));
+        new AssertImportActions().check(results, CurrencyUnit.EUR);
+
+        // check security
+        assertThat(results, hasItem(security( //
+                        hasIsin("IE00B4L5Y983"), hasWkn(null), hasTicker(null), //
+                        hasName("iShsIII-Core MSCI World U.ETF Registered Shs USD (Acc) o.N."), //
+                        hasCurrencyCode("EUR"))));
+
+        // check taxes transaction
+        assertThat(results, hasItem(taxes( //
+                        hasDate("2024-01-15T00:00"), hasShares(50.00), //
+                        hasSource("Vorabpauschale01.txt"), //
+                        hasNote("Abrechnungs-Nr. 92956682"), //
+                        hasAmount("EUR", 11.43), hasGrossValue("EUR", 11.43), //
+                        hasTaxes("EUR", 0.00), hasFees("EUR", 0.00))));
     }
 
     @Test
@@ -3280,7 +3400,7 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(44.00))));
         assertThat(transaction.getSource(), is("Kontoumsaetze04.txt"));
         assertThat(transaction.getNote(), is("SEPA-Überweisung"));
-        
+
         item = iter.next();
 
         // assert transaction
@@ -3290,7 +3410,7 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(7.99))));
         assertThat(transaction.getSource(), is("Kontoumsaetze04.txt"));
         assertThat(transaction.getNote(), is("SEPA-Überweisung"));
-        
+
         item = iter.next();
 
         // assert transaction
@@ -3300,7 +3420,7 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(212.00))));
         assertThat(transaction.getSource(), is("Kontoumsaetze04.txt"));
         assertThat(transaction.getNote(), is("SEPA-Überweisung"));
-        
+
         item = iter.next();
 
         // assert transaction
@@ -3310,7 +3430,7 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(36.00))));
         assertThat(transaction.getSource(), is("Kontoumsaetze04.txt"));
         assertThat(transaction.getNote(), is("SEPA-Überweisung"));
-        
+
         item = iter.next();
 
         // assert transaction
@@ -3341,7 +3461,7 @@ public class DABPDFExtractorTest
         assertThat(results.stream().filter(TransactionItem.class::isInstance).count(), is(5L));
 
         Item item = iter.next();
-        
+
         // assert transaction
         AccountTransaction transaction = (AccountTransaction) item.getSubject();
         assertThat(transaction.getType(), is(AccountTransaction.Type.DEPOSIT));
@@ -3349,9 +3469,9 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(10.00))));
         assertThat(transaction.getSource(), is("Kontoumsaetze05.txt"));
         assertThat(transaction.getNote(), is("SEPA-Überweisung"));
-        
+
         item = iter.next();
-        
+
         // assert transaction
         transaction = (AccountTransaction) item.getSubject();
         assertThat(transaction.getType(), is(AccountTransaction.Type.DEPOSIT));
@@ -3359,9 +3479,9 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(100.00))));
         assertThat(transaction.getSource(), is("Kontoumsaetze05.txt"));
         assertThat(transaction.getNote(), is("SEPA-Überweisung"));
-        
+
         item = iter.next();
-        
+
         // assert transaction
         transaction = (AccountTransaction) item.getSubject();
         assertThat(transaction.getType(), is(AccountTransaction.Type.REMOVAL));
@@ -3369,9 +3489,9 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(1000.00))));
         assertThat(transaction.getSource(), is("Kontoumsaetze05.txt"));
         assertThat(transaction.getNote(), is("SEPA-Überweisung"));
-        
+
         item = iter.next();
-        
+
         // assert transaction
         transaction = (AccountTransaction) item.getSubject();
         assertThat(transaction.getType(), is(AccountTransaction.Type.REMOVAL));
@@ -3379,9 +3499,9 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(100))));
         assertThat(transaction.getSource(), is("Kontoumsaetze05.txt"));
         assertThat(transaction.getNote(), is("SEPA-Überweisung"));
-        
+
         item = iter.next();
-        
+
         // assert transaction
         transaction = (AccountTransaction) item.getSubject();
         assertThat(transaction.getType(), is(AccountTransaction.Type.INTEREST_CHARGE));
@@ -3410,7 +3530,7 @@ public class DABPDFExtractorTest
         assertThat(results.stream().filter(TransactionItem.class::isInstance).count(), is(7L));
 
         Item item = iter.next();
-        
+
         // assert transaction
         AccountTransaction transaction = (AccountTransaction) item.getSubject();
         assertThat(transaction.getType(), is(AccountTransaction.Type.DEPOSIT));
@@ -3418,9 +3538,9 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(50.00))));
         assertThat(transaction.getSource(), is("Kontoumsaetze06.txt"));
         assertThat(transaction.getNote(), is("SEPA-Gutschrift"));
-        
+
         item = iter.next();
-        
+
         // assert transaction
         transaction = (AccountTransaction) item.getSubject();
         assertThat(transaction.getType(), is(AccountTransaction.Type.DEPOSIT));
@@ -3428,9 +3548,9 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(50.00))));
         assertThat(transaction.getSource(), is("Kontoumsaetze06.txt"));
         assertThat(transaction.getNote(), is("SEPA-Gutschrift"));
-        
+
         item = iter.next();
-        
+
         // assert transaction
         transaction = (AccountTransaction) item.getSubject();
         assertThat(transaction.getType(), is(AccountTransaction.Type.DEPOSIT));
@@ -3438,9 +3558,9 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(50.00))));
         assertThat(transaction.getSource(), is("Kontoumsaetze06.txt"));
         assertThat(transaction.getNote(), is("SEPA-Gutschrift"));
-        
+
         item = iter.next();
-        
+
         // assert transaction
         transaction = (AccountTransaction) item.getSubject();
         assertThat(transaction.getType(), is(AccountTransaction.Type.REMOVAL));
@@ -3448,9 +3568,9 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(50.00))));
         assertThat(transaction.getSource(), is("Kontoumsaetze06.txt"));
         assertThat(transaction.getNote(), is("SEPA-Überweisung"));
-        
+
         item = iter.next();
-        
+
         // assert transaction
         transaction = (AccountTransaction) item.getSubject();
         assertThat(transaction.getType(), is(AccountTransaction.Type.REMOVAL));
@@ -3458,9 +3578,9 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(50))));
         assertThat(transaction.getSource(), is("Kontoumsaetze06.txt"));
         assertThat(transaction.getNote(), is("SEPA-Dauerauftrag"));
-        
+
         item = iter.next();
-        
+
         // assert transaction
         transaction = (AccountTransaction) item.getSubject();
         assertThat(transaction.getType(), is(AccountTransaction.Type.REMOVAL));
@@ -3468,9 +3588,9 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(50))));
         assertThat(transaction.getSource(), is("Kontoumsaetze06.txt"));
         assertThat(transaction.getNote(), is("SEPA-Dauerauftrag"));
-        
+
         item = iter.next();
-        
+
         // assert transaction
         transaction = (AccountTransaction) item.getSubject();
         assertThat(transaction.getType(), is(AccountTransaction.Type.REMOVAL));
@@ -3499,7 +3619,7 @@ public class DABPDFExtractorTest
         assertThat(results.stream().filter(TransactionItem.class::isInstance).count(), is(3L));
 
         Item item = iter.next();
-        
+
         // assert transaction
         AccountTransaction transaction = (AccountTransaction) item.getSubject();
         assertThat(transaction.getType(), is(AccountTransaction.Type.DEPOSIT));
@@ -3507,9 +3627,9 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(50.00))));
         assertThat(transaction.getSource(), is("Kontoumsaetze07.txt"));
         assertThat(transaction.getNote(), is("SEPA-Gutschrift"));
-        
+
         item = iter.next();
-        
+
         // assert transaction
         transaction = (AccountTransaction) item.getSubject();
         assertThat(transaction.getType(), is(AccountTransaction.Type.REMOVAL));
@@ -3517,9 +3637,9 @@ public class DABPDFExtractorTest
         assertThat(transaction.getMonetaryAmount(), is(Money.of(CurrencyUnit.EUR, Values.Amount.factorize(50.00))));
         assertThat(transaction.getSource(), is("Kontoumsaetze07.txt"));
         assertThat(transaction.getNote(), is("SEPA-Dauerauftrag"));
-        
+
         item = iter.next();
-        
+
         // assert transaction
         transaction = (AccountTransaction) item.getSubject();
         assertThat(transaction.getType(), is(AccountTransaction.Type.FEES));
